@@ -1,39 +1,106 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-    <title>Mensaje Secreto</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mensaje Clasificado</title>
     <style>
-        /* Bloquea la selección de texto */
-        body { user-select: none; -webkit-user-select: none; font-family: sans-serif;}
-        #pantalla-negra { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: black; color: white; text-align: center; padding-top: 20%; z-index: 9999; }
+        body {
+            background-color: #0d1117;
+            color: #c9d1d9;
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        #contenido {
+            background: #161b22;
+            padding: 40px;
+            border-radius: 10px;
+            border: 1px solid #30363d;
+            box-shadow: 0 0 25px rgba(255, 123, 114, 0.15);
+            width: 90%;
+            max-width: 600px;
+            text-align: center;
+        }
+        .candado {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+        h2 {
+            color: #c9d1d9;
+            margin: 0;
+            letter-spacing: 1px;
+        }
+        .mensaje-box {
+            background: #0d1117;
+            border: 1px dashed #58a6ff;
+            padding: 25px;
+            border-radius: 5px;
+            color: #58a6ff;
+            font-size: 1.1em;
+            margin-top: 25px;
+            text-align: left;
+            white-space: pre-wrap;
+        }
+        .estado {
+            color: #ff7b72;
+            font-size: 0.85em;
+            margin-top: 25px;
+            text-transform: uppercase;
+        }
+        #pantalla-negra {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000000;
+            color: #ff0000;
+            text-align: center;
+            padding-top: 25vh;
+            z-index: 9999;
+        }
     </style>
 </head>
-<body oncontextmenu="return false;"> <!-- Bloquea click derecho -->
+<body oncontextmenu="return false;">
     
     <div id="contenido">
-        <h3 style="color: red;">Este mensaje ya fue eliminado.</h3>
-        <p>{{ mensaje }}</p>
+        <div class="candado">🔓</div>
+        <h2>MENSAJE DESENCRIPTADO</h2>
+        <div class="mensaje-box">
+            {{ mensaje }}
+        </div>
+        <div class="estado">
+            ⚠️ Este mensaje ha sido purgado permanentemente de los servidores.
+        </div>
     </div>
 
     <div id="pantalla-negra">
-        <h2>Posible captura de pantalla detectada. Mensaje oculto.</h2>
+        <h1 style="font-size: 3em; margin-bottom: 10px;">BLOQUEO DE SEGURIDAD</h1>
+        <p style="font-size: 1.5em;">Posible captura de pantalla detectada.</p>
     </div>
 
     <script>
-        // Bloquear atajos de teclado (Ctrl+C, Ctrl+P)
+        // Bloqueo de atajos (Ctrl+C, Ctrl+P, Ctrl+S, Ctrl+A)
         document.addEventListener('keydown', function(e) {
-            if (e.ctrlKey && (e.key === 'c' || e.key === 'p' || e.key === 's')) {
+            if (e.ctrlKey && (e.key === 'c' || e.key === 'p' || e.key === 's' || e.key === 'a')) {
                 e.preventDefault();
             }
         });
 
-        // Anti-captura: Si la ventana pierde el foco (ej. al abrir recortes de Windows)
+        // Oscurece la pantalla si la ventana pierde el enfoque
         window.addEventListener('blur', function() {
             document.getElementById('contenido').style.display = 'none';
             document.getElementById('pantalla-negra').style.display = 'block';
         });
 
-        // Restaura el mensaje al volver a la ventana
+        // Restaura el mensaje al hacer clic de nuevo en la ventana
         window.addEventListener('focus', function() {
             document.getElementById('contenido').style.display = 'block';
             document.getElementById('pantalla-negra').style.display = 'none';
