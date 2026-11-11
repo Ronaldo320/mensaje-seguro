@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head><title>Crear Mensaje</title></head>
+<body>
+    <h2>Crear mensaje de un solo uso</h2>
+    <textarea id="texto" rows="5" cols="40"></textarea><br>
+    <button onclick="generarLink()">Generar Link Seguro</button>
+    <p id="resultado"></p>
+
+    <script>
+        async function generarLink() {
+            const mensaje = document.getElementById('texto').value;
+            const response = await fetch('/api/guardar', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({mensaje: mensaje})
+            });
+            const data = await response.json();
+            document.getElementById('resultado').innerHTML = `Comparte este link: <a href="${data.enlace}">${data.enlace}</a>`;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mensaje Secreto</title>
+    <style>
+        /* Bloquea la selección de texto */
+        body { user-select: none; -webkit-user-select: none; font-family: sans-serif;}
+        #pantalla-negra { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: black; color: white; text-align: center; padding-top: 20%; z-index: 9999; }
+    </style>
+</head>
+<body oncontextmenu="return false;"> <!-- Bloquea click derecho -->
+    
+    <div id="contenido">
+        <h3 style="color: red;">Este mensaje ya fue eliminado del servidor. Si cierras la página, lo perderás para siempre.</h3>
+        <p>{{ mensaje }}</p>
+    </div>
+
+    <div id="pantalla-negra">
+        <h2>Posible captura de pantalla detectada. Mensaje oculto.</h2>
+    </div>
+
+    <script>
+        // Bloquear atajos de teclado (Ctrl+C, Ctrl+P)
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && (e.key === 'c' || e.key === 'p' || e.key === 's')) {
+                e.preventDefault();
+            }
+        });
+
+        // Anti-captura: Si la ventana pierde el foco (ej. al abrir recortes de Windows)
+        window.addEventListener('blur', function() {
+            document.getElementById('contenido').style.display = 'none';
+            document.getElementById('pantalla-negra').style.display = 'block';
+        });
+
+        // Restaura el mensaje al volver a la ventana
+        window.addEventListener('focus', function() {
+            document.getElementById('contenido').style.display = 'block';
+            document.getElementById('pantalla-negra').style.display = 'none';
+        });
+    </script>
+</body>
+</html>
