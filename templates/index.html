@@ -1,22 +1,103 @@
 <!DOCTYPE html>
-<html>
-<head><title>Crear Mensaje</title></head>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terminal Segura | Encriptar</title>
+    <style>
+        body {
+            background-color: #0d1117;
+            color: #c9d1d9;
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: #161b22;
+            padding: 40px;
+            border-radius: 10px;
+            border: 1px solid #30363d;
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.15);
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+        }
+        h2 {
+            color: #00ff41;
+            margin-top: 0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        textarea {
+            width: 90%;
+            background: #0d1117;
+            color: #00ff41;
+            border: 1px solid #30363d;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: inherit;
+            resize: none;
+            outline: none;
+            margin-bottom: 20px;
+        }
+        textarea:focus {
+            border-color: #00ff41;
+            box-shadow: 0 0 10px rgba(0, 255, 65, 0.2);
+        }
+        button {
+            background: transparent;
+            color: #00ff41;
+            border: 1px solid #00ff41;
+            padding: 12px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: bold;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+        }
+        button:hover {
+            background: #00ff41;
+            color: #0d1117;
+        }
+        #resultado {
+            margin-top: 20px;
+            word-wrap: break-word;
+        }
+        a {
+            color: #58a6ff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+            text-shadow: 0 0 5px rgba(88, 166, 255, 0.5);
+        }
+    </style>
+</head>
 <body>
-    <h2>Crear mensaje de un solo uso</h2>
-    <textarea id="texto" rows="5" cols="40"></textarea><br>
-    <button onclick="generarLink()">Generar Link Seguro</button>
-    <p id="resultado"></p>
+    <div class="container">
+        <h2>Terminal Segura</h2>
+        <p style="font-size: 0.9em; color: #8b949e;">Generador de enlaces de un solo uso</p>
+        <textarea id="texto" rows="5" placeholder="Ingresa el mensaje clasificado aquí..."></textarea><br>
+        <button onclick="generarLink()">Encriptar y Generar Link</button>
+        <p id="resultado"></p>
+    </div>
 
     <script>
         async function generarLink() {
             const mensaje = document.getElementById('texto').value;
+            if (!mensaje.trim()) return;
             const response = await fetch('/api/guardar', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({mensaje: mensaje})
             });
             const data = await response.json();
-            document.getElementById('resultado').innerHTML = `Comparte este link: <a href="${data.enlace}">${data.enlace}</a>`;
+            document.getElementById('resultado').innerHTML = `<br>🔗 Enlace generado:<br><br><a href="${data.enlace}" target="_blank">${data.enlace}</a>`;
+            document.getElementById('texto').value = '';
         }
     </script>
 </body>
